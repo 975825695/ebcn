@@ -10,9 +10,9 @@ Vue.config.productionTip = false
 // 本地跨域
 // Vue.prototype.url = 'v2'; 
 // 正式包
-Vue.prototype.url = 'http://47.104.188.40:80';
+// Vue.prototype.url = 'http://47.104.188.40:80';
 // 测试环境
-// Vue.prototype.url = 'http://localhost:8888';
+Vue.prototype.url = 'http://localhost:8888';
 let loadingInstance
 // http请求拦截
 axios.interceptors.request.use(config => {
@@ -39,17 +39,18 @@ axios.interceptors.request.use(config => {
 });
 
 axios.interceptors.response.use(response => {
-    loadingInstance.close();
-    if(response.data.errorType===3){
+  loadingInstance.close()
+    if(response.data.success===false){
       Message({
         showClose: true,
         message: response.data.message,
         type: 'error'
       });
-      setTimeout(() => {
-        window.location.href = "#/embarkLogin"
-      }, 2000);
-      
+        sessionStorage.removeItem('user')
+        router.replace({
+          path: '/embarkLogin',
+        })
+      return response
     }else {
       return response;
     }

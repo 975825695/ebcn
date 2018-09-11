@@ -67,9 +67,12 @@ var router = new Router({
 export default router;
 router.beforeEach(function (to,from,next) {
     const user = sessionStorage.getItem('user')
-    console.log(111);
     if(user){
-     next();
+      if(to.path=='/embarkLogin'){ //如果是登录页面路径，就直接next()
+        next();
+      }else {
+        next();
+      }
     }else {
       if(to.path=='/embarkLogin'){ //如果是登录页面路径，就直接next()
         next();

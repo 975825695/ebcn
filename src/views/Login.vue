@@ -103,15 +103,11 @@ export default {
       if(sessionStorage.getItem('user')){
           // window.location.href = 'project.html'
         this.$router.push('/')
-      }else {
-        let url = this.url +'/login/userInfo'
-        // let url = "v2/login/userInfo"
-        this.axios.get(url)
-          .then( (response)=> {
-          const user = JSON.stringify(response.data)
-          sessionStorage.setItem("user",user);
-      })
       }
+    },
+    logout:function(){
+      sessionStorage.removeItem('user');
+      window.location.href = this.url+"/ode/_logout"
     },
     login: function() {
           this.usernameError = false;
@@ -138,7 +134,7 @@ export default {
           //   password: this.password
           // }
           this.axios.post("/login/userLogin", param).then((response)=> {
-            if (response.data.success) {
+            if (response.data.success==true) {
               //window.location.href = "/?locale=zh_CN";
               let url = this.url + "/login/userInfo"
               this.axios.get(url)
