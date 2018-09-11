@@ -58,7 +58,6 @@
         },
         goback:function(){
           this.$router.push({path:'/'})
-          // window.location.href = 'http://localhost:8888'
         },
         logout:function(){
           sessionStorage.removeItem('user');

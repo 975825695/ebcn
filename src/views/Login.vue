@@ -35,8 +35,11 @@
                   <input type="password" v-model="password" placeholder="密码" autocomplete="new-password">
                 </div>
               </div>
-              <div class="button-box">
-                <input type="button" :class="['button', usernameError ? 'input-error' : '']" @click="login" value="登录">
+              <div class="button-box" v-if="!logoutBool">
+                <input type="button" :class="['button', usernameError ? 'input-error' : '']" @click="login()" value="登录">
+              </div>
+              <div class="button-box" v-if="logoutBool">
+                <input type="button" :class="['button', usernameError ? 'input-error' : '']" @click="logout()" value="注销">
               </div>
             </div>      
       </div>
@@ -69,9 +72,11 @@ export default {
       usernameError: false,
       passwordError: false,
       timer: null,
+      logoutBool:false
     }
   },
   created (){
+    this.init();
     // let user = sessionStorage.getItem('user')
     // if(sessionStorage.getItem('user')){
     //     // window.location.href = 'project.html'
@@ -95,13 +100,18 @@ export default {
   },
   methods:{
     init:function(){
-      let url = 'http://localhost:8888/login/userInfo'
-      // let url = "v2/login/userInfo"
-       this.axios.get(url)
+      if(sessionStorage.getItem('user')){
+          // window.location.href = 'project.html'
+        this.$router.push('/')
+      }else {
+        let url = this.url +'/login/userInfo'
+        // let url = "v2/login/userInfo"
+        this.axios.get(url)
           .then( (response)=> {
           const user = JSON.stringify(response.data)
           sessionStorage.setItem("user",user);
       })
+      }
     },
     login: function() {
           this.usernameError = false;
@@ -130,13 +140,12 @@ export default {
           this.axios.post("/login/userLogin", param).then((response)=> {
             if (response.data.success) {
               //window.location.href = "/?locale=zh_CN";
-              let url = 'http://localhost:8888/login/userInfo'
-            // let url = "v2/login/userInfo"
+              let url = this.url + "/login/userInfo"
               this.axios.get(url)
               .then((response) => {
                   const user = JSON.stringify(response.data)
                   sessionStorage.setItem("user",user);  
-                  window.location.href = 'dist/index.html#/'
+                  this.$router.push('/')
                   // window.location.href = "project.html";
               })
               .catch((err) => {
@@ -145,6 +154,7 @@ export default {
             } else {
               if (response.data.errorType === 0) {
                 vueThis.usernameError = true;
+                vueThis.logoutBool = true
               } else if (response.data.errorType === 1) {
                 vueThis.passwordError = true;
               }

@@ -7,8 +7,12 @@ import axios from 'axios'
 import { Loading, Message } from 'element-ui'
 
 Vue.config.productionTip = false
-// Vue.prototype.url = 'v2';
-Vue.prototype.url = 'http://localhost:8888';
+// 本地跨域
+// Vue.prototype.url = 'v2'; 
+// 正式包
+Vue.prototype.url = 'http://47.104.188.40:80';
+// 测试环境
+// Vue.prototype.url = 'http://localhost:8888';
 let loadingInstance
 // http请求拦截
 axios.interceptors.request.use(config => {
@@ -46,7 +50,6 @@ axios.interceptors.response.use(response => {
         window.location.href = "#/embarkLogin"
       }, 2000);
       
-      // window.location.href = "http://localhost:8088/dist/index.html#/embarkLogin"
     }else {
       return response;
     }

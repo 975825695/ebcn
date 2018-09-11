@@ -76,6 +76,5 @@ router.beforeEach(function (to,from,next) {
       } else { //不然就跳转到登录；
         next('/embarkLogin');
       }
-    //   window.location.href = 'http://localhost:8888/dist/index.html#/embarkLogin'
     }
 })

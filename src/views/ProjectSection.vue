@@ -69,9 +69,6 @@ export default {
       let user = sessionStorage.getItem('user')
       this.currentUser = JSON.parse(user);
           let url = this.url +'/login/getProjectBySection'
-          console.log(url)
-          // let url = 'v2/login/getProjectBySection'
-          // let url = 'http://localhost:8888/login/getProjectBySection'
           this.axios.get(url, {params:{name: this.currentUser.userid}})
           .then((res) => {
             var num = []

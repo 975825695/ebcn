@@ -112,8 +112,6 @@ export default {
             teacher_name: user.userid
           }
           let url = this.url + `/teacher/getStudentsAndProjects?teacher_name=${user.userid}`
-          // let url = `v2/teacher/getStudentsAndProjects?teacher_name=${user.userid}`
-          // let url = `http://localhost:8888/teacher/getStudentsAndProjects?teacher_name=${user.userid}`
           this.axios.get(url)
             .then((res) => {
               // this.student = res.data
@@ -156,7 +154,7 @@ export default {
       console.log(this.tableData);
     },
     toDetail(id){
-      window.location.href = 'http://localhost:8888/#'+id
+      window.location.href = this.url + '/#' +id
     }
   }
 }

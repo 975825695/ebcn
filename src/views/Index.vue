@@ -27,8 +27,6 @@ export default {
   methods:{
     init:function(){
       let url = this.url +'/login/userInfo'
-      // let url = 'http://localhost:8888/login/userInfo'
-      // let url = "v2/login/userInfo"
        this.axios.get(url)
           .then( (response)=> {
           const user = JSON.stringify(response.data)
