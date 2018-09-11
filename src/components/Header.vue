@@ -20,6 +20,11 @@
               <router-link :to="{path:'/teacher/student'}">学生管理</router-link>
             </p>
           </div>
+          <div>
+            <p>
+              <router-link :to="{path:'/embarkLogin'}">登陆</router-link>
+            </p>
+          </div>
         </nav>
         <div class="user">
           <span>
@@ -57,7 +62,7 @@
         },
         logout:function(){
           sessionStorage.removeItem('user');
-          window.location='/ode/_logout'
+          window.location=this.url+'/ode/_logout'
         }
       }
     }

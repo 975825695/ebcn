@@ -111,8 +111,9 @@ export default {
           let params = {
             teacher_name: user.userid
           }
+          let url = this.url + `/teacher/getStudentsAndProjects?teacher_name=${user.userid}`
           // let url = `v2/teacher/getStudentsAndProjects?teacher_name=${user.userid}`
-          let url = `http://localhost:8888/teacher/getStudentsAndProjects?teacher_name=${user.userid}`
+          // let url = `http://localhost:8888/teacher/getStudentsAndProjects?teacher_name=${user.userid}`
           this.axios.get(url)
             .then((res) => {
               // this.student = res.data
@@ -147,7 +148,9 @@ export default {
     },
     download_excel(){
       //  window.location = "v2/teacher/getStudentInfoExcel"
-       window.location = "teacher/getStudentInfoExcel"
+      var url = this.url+"/teacher/getStudentInfoExcel"
+      // console.log(url);
+       window.location = url
     },
     sortData(){
       console.log(this.tableData);

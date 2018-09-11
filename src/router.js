@@ -16,6 +16,9 @@ var router = new Router({
     {
       path: '/',
       name: 'index',
+      // meta: {
+      //   requireAuth: true,  // 添加该字段，表示进入这个路由是需要登录的
+      // },
       component: () => import('./views/Index.vue'),
       children:[
         {path:'', component: () => import('./views/Project.vue')},
@@ -23,6 +26,14 @@ var router = new Router({
         {path:'section', component: () => import('./views/ProjectSection.vue')},
         // {path:'detail/:id',component:resolve=>require(['./views/Teacher'],resolve)}
       ]
+    },
+    {
+      path: '/embarkLogin',
+      name: 'embarkLogin',
+      // meta: {
+      //   requireAuth: true,  // 添加该字段，表示进入这个路由是需要登录的
+      // },
+      component: () => import('./views/Login.vue'),
     },
     // {
     //   path: '/index',
@@ -36,6 +47,9 @@ var router = new Router({
     // },
     {
       path: '/teacher',
+      // meta: {
+      //   requireAuth: true,  // 添加该字段，表示进入这个路由是需要登录的
+      // },
       component: () => import('./views/Teacher.vue'),
       // beforeEnter: (to, from, next) => {
       //   let account = sessionStorage.getItem('account')
@@ -52,23 +66,11 @@ var router = new Router({
 })
 export default router;
 router.beforeEach(function (to,from,next) {
-  const user = sessionStorage.getItem('user')
-  if(user){
-    console.log(1,user)
-    next();
-  }else {
-    console.log(2,user)
-    window.location.href = 'http://localhost:8888/login.html'
-  }
-  // if(to.meta.auth){
-  //     /*不为空*/
-  //     if(sessionStorage.getItem('user')){
-  //         next();
-  //     }else{
-  //         next('/login?redirect='+to.fullPath)
-  //     }
-  // }
-  // else{
-  //     next();
-  // }
+    const user = sessionStorage.getItem('user')
+    if(user){
+      next();
+    }else {
+      // this.$router.push({path:'/login'})
+      window.location.href = 'http://localhost:8888/dist/index.html#/embarkLogin'
+    }
 })
