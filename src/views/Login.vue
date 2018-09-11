@@ -119,11 +119,15 @@ export default {
             this.errorMessage = "请联络  info@embarkchina.org";
             return;
           }
-          var param = convertObjToParams({
+          var param = this.convertObjToParams({
             username: this.username,
             password: this.password
           });
-          this.axios.post("/login/userLogin", param).then(function(response) {
+          // var param = {
+          //   username: this.username,
+          //   password: this.password
+          // }
+          this.axios.post("/login/userLogin", param).then((response)=> {
             if (response.data.success) {
               //window.location.href = "/?locale=zh_CN";
               let url = 'http://localhost:8888/login/userInfo'
@@ -148,7 +152,14 @@ export default {
             }
 
           })
+    },
+    convertObjToParams: function (obj) {
+        var param = new URLSearchParams();
+        for (var key in obj) {
+            param.append(key, obj[key]);
         }
+        return param;
+    },
   }
 }
 </script>

@@ -67,10 +67,15 @@ var router = new Router({
 export default router;
 router.beforeEach(function (to,from,next) {
     const user = sessionStorage.getItem('user')
+    console.log(111);
     if(user){
-      next();
+     next();
     }else {
-      // this.$router.push({path:'/login'})
-      window.location.href = 'http://localhost:8888/dist/index.html#/embarkLogin'
+      if(to.path=='/embarkLogin'){ //如果是登录页面路径，就直接next()
+        next();
+      } else { //不然就跳转到登录；
+        next('/embarkLogin');
+      }
+    //   window.location.href = 'http://localhost:8888/dist/index.html#/embarkLogin'
     }
 })

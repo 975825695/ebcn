@@ -9,6 +9,17 @@
 export default {
   name: 'app',
   components: {
+  },
+  created(){
+    let url = this.url +'/login/userInfo'
+    this.axios.get(url)
+      .then( (response)=> {
+      const user = JSON.stringify(response.data)
+      sessionStorage.setItem("user",user);
+    })
+  },
+  methods:{
+
   }
 }
 </script>
