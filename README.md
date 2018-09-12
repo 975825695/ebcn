@@ -1,5 +1,10 @@
 # ebcn
 
+##
+```
+author :jorce li
+
+```
 ## Project setup
 ```
 yarn install
