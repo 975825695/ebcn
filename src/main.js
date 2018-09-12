@@ -7,10 +7,11 @@ import axios from 'axios'
 import { Loading, Message } from 'element-ui'
 
 Vue.config.productionTip = false
+Vue.prototype.url = process.env.VUE_APP_URL;
 // 本地跨域
 // Vue.prototype.url = 'v2'; 
 // 正式包
-Vue.prototype.url = 'http://47.104.188.40:80';
+// Vue.prototype.url = 'http://47.104.188.40:80';
 // 测试环境
 // Vue.prototype.url = 'http://localhost:8888';
 let loadingInstance
