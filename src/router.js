@@ -1,3 +1,9 @@
+/*
+ * @Author: jorce 
+ * @Date: 2018-09-12 16:47:45 
+ * @Last Modified by:   jorce 
+ * @Last Modified time: 2018-09-12 16:47:45 
+ */
 import Vue from 'vue'
 import Router from 'vue-router'
 import Teacher from "./views/Teacher.vue";
@@ -35,12 +41,10 @@ var router = new Router({
       // },
       component: () => import('./views/Login.vue'),
     },
+    // 404
     {
       path: '*',
       name: '404',
-      // meta: {
-      //   requireAuth: true,  // 添加该字段，表示进入这个路由是需要登录的
-      // },
       component: () => import('./views/Login.vue'),
     },
     // {

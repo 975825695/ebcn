@@ -5,26 +5,29 @@
 </template>
 
 <script>
-
+// import { mapState,mapActions } from "vuex";
 export default {
   name: 'app',
   components: {
   },
+  computed:{
+    // ...mapState(['indexContentTitle'])
+  },
   created(){
+    // console.log(this.indexContentTitle)
     let url = this.url +'/login/userInfo'
     this.axios.get(url)
       .then( (response)=> {
         if(response.data.success===false){
             return
         }else {
-           console.log(2);
           const user = JSON.stringify(response.data)
             sessionStorage.setItem("user",user);
         }
     })
   },
   methods:{
-
+    // ...mapActions(['delUserLike']),
   }
 }
 </script>

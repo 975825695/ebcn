@@ -1,3 +1,9 @@
+/*
+ * @Author: jorce 
+ * @Date: 2018-09-12 16:47:36 
+ * @Last Modified by: jorce
+ * @Last Modified time: 2018-09-12 16:52:23
+ */
 import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
