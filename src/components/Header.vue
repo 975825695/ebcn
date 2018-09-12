@@ -79,7 +79,9 @@
           width: 150px;
           cursor: pointer;
           p{
-           
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
             font-size: 21px;
             font-family: SourceHanSansCN-Bold;
             color: #2288FF ;
@@ -98,6 +100,9 @@
             width: 100px;
             height: 60px;
             p{
+              white-space: nowrap;
+              text-overflow: ellipsis;
+              overflow: hidden;
               height: 60px;
               line-height: 60px;
               display: flex;

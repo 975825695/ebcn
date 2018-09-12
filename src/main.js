@@ -10,9 +10,9 @@ Vue.config.productionTip = false
 // 本地跨域
 // Vue.prototype.url = 'v2'; 
 // 正式包
-// Vue.prototype.url = 'http://47.104.188.40:80';
+Vue.prototype.url = 'http://47.104.188.40:80';
 // 测试环境
-Vue.prototype.url = 'http://localhost:8888';
+// Vue.prototype.url = 'http://localhost:8888';
 let loadingInstance
 // http请求拦截
 axios.interceptors.request.use(config => {

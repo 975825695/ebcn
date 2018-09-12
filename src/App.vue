@@ -14,8 +14,11 @@ export default {
     let url = this.url +'/login/userInfo'
     this.axios.get(url)
       .then( (response)=> {
-        if(response.data.success){
-            const user = JSON.stringify(response.data)
+        if(response.data.success===false){
+            return
+        }else {
+           console.log(2);
+          const user = JSON.stringify(response.data)
             sessionStorage.setItem("user",user);
         }
     })

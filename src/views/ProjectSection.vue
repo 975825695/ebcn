@@ -1,5 +1,4 @@
 <template>
-    <div>
     <div class="container" height="200">
       <div class="main">
 
@@ -27,7 +26,7 @@
         stripe
         style="width: 100%">
         <el-table-column
-          fixed
+          fixed="left"
           prop="section"
           class="title"
           label="章节名称"
@@ -45,7 +44,6 @@
         </el-table-column>
       </el-table>
       </div>
-    </div>
     </div>
 </template>
 
@@ -97,111 +95,12 @@ export default {
 }
 </script>
  <style scoped>
-    .header-container {
-      display: flex;
-      width: 100%;
-      height: 80px;
-      justify-content: space-between;
-      background-color: #fff;
-    }
-
-    .logo-nav {
-      width: 80%;
-      height: 44px;
-      line-height: 44px;
-      margin: 0 auto;
-      padding: 18px 32px;
-      font-size: 14px;
-      background-color: #fff;
-    }
-
-    .logo-nav>div {
-      float: left;
-    }
-
-    .embark-logo {
-      cursor: pointer;
-      padding-left: 72px;
-      position: relative;
-      font-size: 16px;
-      color: #4E4E4E;
-      letter-spacing: 0;
-      font-family: 'SourceHanSansCN-Bold';
-    }
-
-    .embark-logo img {
-      position: absolute;
-      top: 0;
-      left: 0px;
-      width: 44px;
-      height: 44px;
-    }
-
-    .logo-nav .userInfo {
-      float: right;
-      margin-right: 0;
-      position: relative;
-      cursor: pointer;
-    }
-
-    .logo-nav .teacher-entry {
-      float: right;
-      margin-right: 30px;
-      cursor: pointer;
-      display: none;
-    }
-
-    .teacher-entry:hover {
-      color: rgba(45, 144, 255, 1);
-    }
-
-    .logo-nav .teacherEntryShow {
-      display: block;
-    }
-
-    .userInfo {
-      position: relative;
-      font-weight: 500;
-    }
-
-    .userInfo img {
-      position: absolute;
-      width: 20px;
-      height: 20px;
-      right: -23px;
-      top: 12px;
-    }
-
-    .userInfo>span {
-      position: absolute;
-      width: 100px;
-      height: 50px;
-      line-height: 50px;
-      display: none;
-      background-color: #fff;
-      box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.17);
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      text-align: center;
-      right: -30px;
-    }
-
-    .userInfo div:hover {
-      color: rgba(45, 144, 255, 1);
-    }
-
-    .userInfo:hover span {
-      display: block;
-    }
-
-    .userInfo span:hover {
-      color: rgba(45, 144, 255, 1);
-    }
-
     .container {
       display: flex;
+      width: 80%;
+      justify-content: center;
+      align-items: center;
       /* width: 1440px; */
-      margin: 0 auto;
     }
 
     .main {
