@@ -1,16 +1,21 @@
 <template>
     <div class="container" height="200">
       <div class="main">
-        <router-link :to="{path:'section'}">
-          <div class="project-name">
-            <div class="project-title project-title-home">
-              课程体系
+       
+          <div class="project-name" v-for="(list,index) in projectList" :key="index">
+            <div class="project-action">
+              <p @click.stop="reOrAdd(1,index)">重命名</p>
+              <p @click.stop="del(index)">删除</p>
             </div>
+            <router-link :to="{path:list.action}">
+            <div class="project-title project-title-home">
+              {{list.title}}
+            </div>
+            </router-link>
           </div>
-        </router-link>
         <div>
             <!-- target="_blank" -->
-              <div class="project-new">
+              <div class="project-new" @click="reOrAdd(2)">
                 <div class="project-img">
                   <img src="@/assets/add.png" alt="">
                 </div>
@@ -20,7 +25,19 @@
               </div>
         </div>
       </div>
+      <el-dialog :title="dialogTitle" :visible.sync="renameVisible">
+        <el-form :model="form">
+          <el-form-item label="章节名称" :label-width="formLabelWidth">
+            <el-input v-model="form.name" auto-complete="off"></el-input>
+          </el-form-item>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+          <el-button @click="dialogFormVisible = false">取 消</el-button>
+          <el-button type="primary" @click="reOrAddConfirm()">确 定</el-button>
+        </div>
+      </el-dialog>
     </div>
+
 </template>
 
 <script>
@@ -30,7 +47,52 @@ export default {
   data (){
     return{
       isProject: false,
-      currentUser: ''
+      currentUser: '',
+      projectName:'课程体系',
+      projectList:[{
+          title:'课程体系',
+          action:'section'
+        },
+        {
+          title:'测试课程',
+          action:'section'
+        }
+      ],
+      form:{
+        name:''
+      },
+      formLabelWidth:'100px',
+      renameVisible:false,
+      index:null,
+      type:null,
+      dialogTitle:''
+    }
+  },
+  methods:{
+    reOrAdd:function(type,index){
+      this.type = type
+      if(type == 1) {
+         this.index = index
+         this.dialogTitle = '重命名'
+      }else if(type == 2) {
+         this.dialogTitle = '新建'
+      }
+     
+      this.renameVisible = true;
+    },
+    reOrAddConfirm:function(){
+      if (this.type ==1 ) {
+         this.projectList[this.index].title = this.form.name
+      }else if(this.type ==2){
+        this.projectList.push({
+          title:this.form.name
+        })
+      }
+      this.form.name = ''
+      this.renameVisible = false
+    },
+    del:function(index){
+      this.projectList.splice(index,1)
     }
   }
 }
@@ -42,6 +104,23 @@ export default {
       /* width: 1440px; */
       align-items: center;
       justify-content: center;
+      .project-action{
+        width: 100%;
+        display: flex;
+        margin-bottom: 20px;
+        margin-top: 10px;
+        font-size: 14px;
+        color: #ccc;
+        p:hover{
+          color:#2288FF; 
+        }
+        p:nth-of-type(1){
+          margin-left: 120px;
+        }
+        p:nth-of-type(2){
+          margin-left: 10px;
+        }
+      }
     }
 
     .main {
@@ -57,7 +136,7 @@ export default {
       margin: 8px 8px;
       background-color: #fff;
       box-sizing: border-box;
-      padding: 30px;
+      // padding: 20px;
       cursor: pointer;
     }
 

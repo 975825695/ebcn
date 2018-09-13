@@ -47,49 +47,74 @@
       label="操作"
       align="center">
       <template slot-scope="scope">
-        <el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button>
+        <el-button @click="exportExcel()" type="text" size="small">导出</el-button>
       </template>
     </el-table-column>
   </el-table>
+  <el-button type="text" @click="importExcel()">导入表格</el-button>
+  <excel-drag ref="excel" :show.sync="dialogVisible"></excel-drag>
   </div>
 </template>
 
 <script>
-
+import excelDrag from "../components/dialog/ExcelDrag";
 export default {
   name: 'home',
   data (){
     return{
-      tableData: [{
-          date: '2016-05-03',
-          name: '王小虎',
-          province: '上海',
-          city: '普陀区',
-          address: '上海市普陀区金沙江路 1518 弄',
-          zip: 200333
-        }, {
-          date: '2016-05-02',
-          name: '王小虎',
-          province: '上海',
-          city: '普陀区',
-          address: '上海市普陀区金沙江路 1518 弄',
-          zip: 200333
-        }, {
-          date: '2016-05-04',
-          name: '王小虎',
-          province: '上海',
-          city: '普陀区',
-          address: '上海市普陀区金沙江路 1518 弄',
-          zip: 200333
-        }, {
-          date: '2016-05-01',
-          name: '王小虎',
-          province: '上海',
-          city: '普陀区',
-          address: '上海市普陀区金沙江路 1518 弄',
-          zip: 200333
-        }]
+        tableData: [{
+            date: '2016-05-03',
+            name: '王小虎',
+            province: '上海',
+            city: '普陀区',
+            address: '上海市普陀区金沙江路 1518 弄',
+            zip: 200333
+          }, {
+            date: '2016-05-02',
+            name: '王小虎',
+            province: '上海',
+            city: '普陀区',
+            address: '上海市普陀区金沙江路 1518 弄',
+            zip: 200333
+          }, {
+            date: '2016-05-04',
+            name: '王小虎',
+            province: '上海',
+            city: '普陀区',
+            address: '上海市普陀区金沙江路 1518 弄',
+            zip: 200333
+          }, {
+            date: '2016-05-01',
+            name: '王小虎',
+            province: '上海',
+            city: '普陀区',
+            address: '上海市普陀区金沙江路 1518 弄',
+            zip: 200333
+        }],
+        excelTitle: ["配件申请单号", "服务单", "申请类型", "需求日期", "收货人", "收货人电话", "审核状态"],
+        dialogVisible:false
     }
+  },
+  created(){
+    this.init()
+  },
+  methods:{
+    importExcel(){
+      this.dialogVisible = true
+    },
+    init:function(){
+      
+    },
+    exportExcel(){
+      this.jorce.exportExcel(
+        "配件申请单",
+        this.tableData,
+        this.excelTitle
+        )
+    }
+  },
+  components:{
+    excelDrag
   }
 }
 </script>

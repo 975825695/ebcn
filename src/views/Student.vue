@@ -21,7 +21,6 @@
     <!-- <div class="tableOuter" v-for='(item,outer) in tableData' :key="outer"> -->
       <el-table-column v-for='(list,inner) in studentHeader' :label="list.title"  :key="inner">
         <template slot-scope="scope">
-          <!-- <p>{{scope.row.projectList[inner].score}}</p> -->
           <!-- <div v-for='(item,index) in scope.row.projectList[inner]' :key="index">
             <p>{{item.score}}</p>
           </div> -->
@@ -31,14 +30,15 @@
         </template>
       </el-table-column>
     <!-- </div> -->
-    <el-table-column
+    <!-- 预留 -->
+    <!-- <el-table-column
       fixed="right"
       label="操作"
       align="center">
       <template slot-scope="scope">
         <el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button>
       </template>
-    </el-table-column>
+    </el-table-column> -->
   </el-table>
    <div class="downLoad">
        <el-button type="plian" class="" @click="download_excel">表格下载</el-button>
@@ -133,6 +133,7 @@ export default {
                   }else if (element.projectList[index].status===1) {
                     element.projectList[index].score = '未打分'
                   }
+                  
                   // else if (element.projectList[index].status===2) {
                   //   element.projectList[index].score = '已打分'
                   // }
@@ -142,9 +143,25 @@ export default {
               this.studentHeader = this.studentHeader.splice(0,temp[0].projectList.length);
               // console.log(this.studentHeader);
               this.tableData = temp;
+
+              // var arrr = []
+              // res.data.forEach(element => {
+              //   var li = {
+              //     studentID:element.studentID,
+              //     studentName:element.studentName
+              //   }
+              //   for (let index = 0; index < element.projectList.length; index++) {
+              //     let key = 'score'+index
+              //     li[key] = element.projectList[index].score
+              //   }
+              //   arrr.push(li)
+              // });
+              // console.log(arrr);
+              //   this.tableData = arrr
               // this.tableData.projectList.sort((a,b)=>a.pos-b.pos);
               // console.log(this.tableData);
             })
+          
             .catch((err) => {
               console.log(err);
             })

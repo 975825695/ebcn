@@ -2,18 +2,20 @@
  * @Author: jorce 
  * @Date: 2018-09-12 16:47:36 
  * @Last Modified by: jorce
- * @Last Modified time: 2018-09-12 16:52:23
+ * @Last Modified time: 2018-09-13 10:25:29
  */
 import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
 import './plugins/element.js'
+import jorce from './plugins/jorce.js'
 import axios from 'axios'
 import { Loading, Message } from 'element-ui'
 
 Vue.config.productionTip = false
 Vue.prototype.url = process.env.VUE_APP_URL;
+Vue.prototype.jorce = jorce;
 // 本地跨域
 // Vue.prototype.url = 'v2'; 
 // 正式包
