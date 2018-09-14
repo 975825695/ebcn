@@ -2,7 +2,7 @@
  * @Author: jorce 
  * @Date: 2018-09-12 16:47:36 
  * @Last Modified by: jorce
- * @Last Modified time: 2018-09-13 10:25:29
+ * @Last Modified time: 2018-09-14 11:28:07
  */
 import Vue from 'vue'
 import App from './App.vue'
@@ -11,7 +11,10 @@ import store from './store'
 import './plugins/element.js'
 import jorce from './plugins/jorce.js'
 import axios from 'axios'
-import { Loading, Message } from 'element-ui'
+import {
+  Loading,
+  Message
+} from 'element-ui'
 
 Vue.config.productionTip = false
 Vue.prototype.url = process.env.VUE_APP_URL;
@@ -37,7 +40,7 @@ axios.interceptors.request.use(config => {
   //         config.url += '?user=admin'
   //     }
   // }
-    loadingInstance = Loading.service({
+  loadingInstance = Loading.service({
     lock: true,
     text: 'Loading',
     spinner: 'el-icon-loading',
@@ -49,27 +52,27 @@ axios.interceptors.request.use(config => {
 
 axios.interceptors.response.use(response => {
   loadingInstance.close()
-    if(response.data.success===false){
-      Message({
-        showClose: true,
-        message: response.data.message,
-        type: 'error'
-      });
-        sessionStorage.removeItem('user')
-        router.replace({
-          path: '/embarkLogin',
-        })
-      return response
-    }else {
-      return response;
-    }
+  if (response.data.success === false) {
+    Message({
+      showClose: true,
+      message: response.data.message,
+      type: 'error'
+    });
+    sessionStorage.removeItem('user')
+    router.replace({
+      path: '/embarkLogin',
+    })
+    return response
+  } else {
+    return response;
+  }
 }, error => {
   loadingInstance.close()
   Message.error({
-   message: '请求失败'
+    message: '请求失败'
   })
   return Promise.reject(error)
- });
+});
 
 
 Vue.prototype.axios = axios;
