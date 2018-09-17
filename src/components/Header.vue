@@ -10,21 +10,21 @@
                <img  src="@/assets/drop.png" alt="">
             </p>
           </div>
-           <div>
+           <div v-if="user.user_identity===1">
             <p>
               <router-link :to="{path:'/teacher/work'}">作业管理</router-link>
             </p>
           </div>
-           <div>
+           <div v-if="user.user_identity===1">
             <p>
               <router-link :to="{path:'/teacher/student'}">学生管理</router-link>
             </p>
           </div>
-          <div>
+          <!-- <div>
             <p>
               <router-link :to="{path:'/embarkLogin'}">登陆</router-link>
             </p>
-          </div>
+          </div> -->
         </nav>
         <div class="user">
           <span>
@@ -45,7 +45,7 @@
             {name:'学生管理',arr:[]},
             {name:'作业管理',arr:[]},
           ],
-          user:{}
+          user:{},
         }
       },
       created(){
@@ -55,6 +55,7 @@
         init:function(){
           let user = sessionStorage.getItem('user')
           this.user = JSON.parse(user);
+          
         },
         goback:function(){
           this.$router.push({path:'/'})
