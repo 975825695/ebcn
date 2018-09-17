@@ -45,7 +45,7 @@ export default {
 <style lang="scss" scoped>
 .title {
     margin-left: 10%;
-    margin-top: 4.6%;
+    margin-top: 2.6%;
     p {
         font-size: 20px;
         font-weight: bold;
@@ -58,7 +58,7 @@ section {
     justify-content: center;
     width: 100%;
     .student {
-        margin-top: 2.4%;
+        // margin-top: 2.4%;
         width: 80%;
     }
 }

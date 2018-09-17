@@ -8,10 +8,10 @@
       <el-table :data="userProjects" stripe style="width: 100%">
         <el-table-column fixed="left" prop="section" class="title" label="章节名称">
         </el-table-column>
-        <el-table-column  prop="section" class="title" label="提交次数">
+        <!-- <el-table-column  prop="section" class="title" label="提交次数">
         </el-table-column>
         <el-table-column  prop="section" class="title" label="我的分数">
-        </el-table-column>
+        </el-table-column> -->
         <el-table-column fixed="right" label="操作" width="200" align="center">
           <template slot-scope="scope">
             <el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button>
@@ -35,7 +35,7 @@ export default {
     methods: {
         handleClick: function(row) {
             // this.$router.push({name: '/projectdetail.html#'+row.projectId,});
-            window.location.href = `/#${row.projectId}`;
+            window.location.href = this.url + `/#${row.projectId}`;
         }
     },
     mounted() {

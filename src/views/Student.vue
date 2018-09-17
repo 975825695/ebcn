@@ -1,7 +1,10 @@
 <template>
   <div class="student">
+    <div class="downLoad">
+        <el-button type="plian" class="" @click="download_excel">表格下载</el-button>
+    </div>
     <el-table :data="tableData" stripe fit style="width: 100%">
-    
+        
       <el-table-column fixed prop="studentID" label="ID" align="center">
       </el-table-column>
       <el-table-column label="姓名" prop="studentName" align="center">
@@ -34,18 +37,16 @@
       <el-pagination
       class="pageination"
       background
-      :current-page.sync="currentPage"
+      :current-page="currentPage"
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
       :page-size="pageSize"
       :page-sizes="pageSizes"
       layout="total, sizes, prev, pager, next, jumper"
-      :total="tableData.length">
+      :total="tempData.length">
       </el-pagination>
     </div>
-    <div class="downLoad">
-      <el-button type="plian" class="" @click="download_excel">表格下载</el-button>
-    </div>
+   
   </div>
 </template>
 
@@ -273,9 +274,9 @@ export default {
                 { title: "3.3.可训练的图像识别" },
                 { title: "Milestone3 可训练的图像识别" }
             ],
-            pageSize:1,
+            pageSize:3,
             pageSizes:[1,2,3,4,5],
-            currentPage:1
+            currentPage:1,
         };
     },
     created() {
@@ -350,8 +351,14 @@ export default {
 
                     this.studentHeader = this.studentHeader.splice(0, len);
                     // console.log(this.studentHeader);
-                    this.tableData = temp.splice((this.currentPage-1)*this.pageSize,this.pageSize)
                     this.tempData = temp;
+                    var arr = []
+                    temp.forEach(element => {
+                       arr.push(element) 
+                    });
+                    this.tempData = arr
+                    this.tableData = temp.splice((this.currentPage-1)*this.pageSize,this.pageSize)
+                    
                     // var arrr = []
                     // res.data.forEach(element => {
                     //   var li = {
@@ -388,6 +395,7 @@ export default {
         },
         handleSizeChange(val) {
             this.pageSize = val
+            console.log(this.tempData)
             let temp = []
             this.tempData.forEach(ele=>{
                 temp.push(ele);     
@@ -396,7 +404,12 @@ export default {
             console.log(`每页 ${val} 条`);
         },
         handleCurrentChange(val) {
-            console.log(`当前页: ${val}`);
+            this.currentPage = val
+            let temp = []
+            this.tempData.forEach(ele=>{
+                temp.push(ele);     
+            })
+            this.tableData = temp.splice((this.currentPage-1)*this.pageSize,this.pageSize)
         }
     }
 };
@@ -414,7 +427,8 @@ export default {
     .downLoad {
         display: flex;
         flex-direction: row-reverse;
-        margin-top: 20px;
+        margin-top: -10px;
+        margin-bottom: 10px;
     }
     .status {
         display: flex;
