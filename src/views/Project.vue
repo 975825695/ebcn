@@ -153,12 +153,10 @@ export default {
     text-align: center;
     letter-spacing: 0.2px;
     margin-bottom: 20px;
+    height: 200px;
 }
 
-.project-title.project-title-home > div {
-    line-height: 270px;
-    color: #4e4e4e;
-}
+
 .project-new {
     float: left;
     width: 242px;

@@ -2,7 +2,7 @@
  * @Author: jorce 
  * @Date: 2018-09-12 16:47:36 
  * @Last Modified by: jorce
- * @Last Modified time: 2018-09-14 11:28:07
+ * @Last Modified time: 2018-09-17 15:23:51
  */
 import Vue from 'vue'
 import App from './App.vue'
@@ -53,11 +53,13 @@ axios.interceptors.request.use(config => {
 axios.interceptors.response.use(response => {
   loadingInstance.close()
   if (response.data.success === false) {
-    Message({
-      showClose: true,
-      message: response.data.message,
-      type: 'error'
-    });
+    if (response.data.errorType !== 0 ) {
+      Message({
+        showClose: true,
+        message: response.data.message,
+        type: 'error'
+      });
+    }
     sessionStorage.removeItem('user')
     router.replace({
       path: '/embarkLogin',
@@ -69,7 +71,7 @@ axios.interceptors.response.use(response => {
 }, error => {
   loadingInstance.close()
   Message.error({
-    message: '请求失败'
+    message: error
   })
   return Promise.reject(error)
 });

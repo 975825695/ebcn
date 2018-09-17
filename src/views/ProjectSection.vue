@@ -1,32 +1,21 @@
 <template>
   <div class="container" height="200">
     <div class="main">
-
-      <!-- <div v-show="!isProject" class="project-name" @click="changeProject">
-          <div class="project-title project-title-home">
-            课程体系
-          </div>
-          <div class="project-time">
-            <p>最后修改:</p>
-            <p>7月12日 &nbsp; 10:02</p>
-          </div>
-        </div> -->
-
-      <!-- <div v-for="(item, index) in studentHeader">
-          <a :href="'/projectdetail.html#' + changeId(item) ">
-            <div class="project-name">
-              <div class="project-title">
-                {{ item }}
-              </div>
-            </div>
-          </a>
-        </div> -->
+      <el-breadcrumb class="bread" separator-class="el-icon-arrow-right">
+        <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
+        <el-breadcrumb-item>课程体系</el-breadcrumb-item>
+      </el-breadcrumb>
       <el-table :data="userProjects" stripe style="width: 100%">
         <el-table-column fixed="left" prop="section" class="title" label="章节名称">
+        </el-table-column>
+        <el-table-column  prop="section" class="title" label="提交次数">
+        </el-table-column>
+        <el-table-column  prop="section" class="title" label="我的分数">
         </el-table-column>
         <el-table-column fixed="right" label="操作" width="200" align="center">
           <template slot-scope="scope">
             <el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button>
+            <el-button @click="handleClick(scope.row)" type="text" size="small">习题</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -87,13 +76,12 @@ export default {
     }
 };
 </script>
- <style scoped>
+<style lang="scss" scoped>
 .container {
     display: flex;
     width: 80%;
     justify-content: center;
     align-items: center;
-    /* width: 1440px; */
 }
 
 .main {
@@ -159,5 +147,11 @@ a {
 }
 .el-table_1_column_1 {
     padding-left: 20px !important;
+}
+.bread{
+    margin-bottom: 20px;
+    span{
+        font-size: 20px;
+    }
 }
 </style>

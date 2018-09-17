@@ -1,6 +1,7 @@
 <template>
   <div class="student">
     <el-table :data="tableData" stripe fit style="width: 100%">
+    
       <el-table-column fixed prop="studentID" label="ID" align="center">
       </el-table-column>
       <el-table-column label="姓名" prop="studentName" align="center">
@@ -27,7 +28,21 @@
         <el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button>
       </template>
     </el-table-column> -->
+   
     </el-table>
+     <div class="page-separate">
+      <el-pagination
+      class="pageination"
+      background
+      :current-page.sync="currentPage"
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      :page-size="pageSize"
+      :page-sizes="pageSizes"
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="tableData.length">
+      </el-pagination>
+    </div>
     <div class="downLoad">
       <el-button type="plian" class="" @click="download_excel">表格下载</el-button>
     </div>
@@ -41,6 +56,7 @@ export default {
         return {
             currentUserId: "",
             tableData: [],
+            tempData:[],
             mockData: [
                 {
                     studentID: "embark003",
@@ -256,7 +272,10 @@ export default {
                 { title: "3.2.图灵机器人-第二部分" },
                 { title: "3.3.可训练的图像识别" },
                 { title: "Milestone3 可训练的图像识别" }
-            ]
+            ],
+            pageSize:1,
+            pageSizes:[1,2,3,4,5],
+            currentPage:1
         };
     },
     created() {
@@ -331,8 +350,8 @@ export default {
 
                     this.studentHeader = this.studentHeader.splice(0, len);
                     // console.log(this.studentHeader);
-                    this.tableData = temp;
-
+                    this.tableData = temp.splice((this.currentPage-1)*this.pageSize,this.pageSize)
+                    this.tempData = temp;
                     // var arrr = []
                     // res.data.forEach(element => {
                     //   var li = {
@@ -366,6 +385,18 @@ export default {
         },
         toDetail(id) {
             window.location.href = this.url + "/#" + id;
+        },
+        handleSizeChange(val) {
+            this.pageSize = val
+            let temp = []
+            this.tempData.forEach(ele=>{
+                temp.push(ele);     
+            })
+            this.tableData = temp.splice((this.currentPage-1)*val,val)
+            console.log(`每页 ${val} 条`);
+        },
+        handleCurrentChange(val) {
+            console.log(`当前页: ${val}`);
         }
     }
 };
@@ -425,6 +456,16 @@ export default {
     &:hover {
         cursor: pointer;
         text-decoration: underline;
+    }
+}
+.page-separate{
+    position: relative;
+    width: 80%;
+    .pageination{
+        width: 100%;
+        position: absolute;
+        display: flex;
+        justify-content: space-between;
     }
 }
 </style>
