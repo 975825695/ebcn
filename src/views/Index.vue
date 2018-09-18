@@ -1,11 +1,11 @@
 <template>
-  <div class="home">
-    <Header></Header>
-    <section>
-      <router-view></router-view>
-      <!-- <Work class="student"></Work> -->
-    </section>
-  </div>
+    <div class="home">
+        <Header></Header>
+        <section>
+            <router-view></router-view>
+            <!-- <Work class="student"></Work> -->
+        </section>
+    </div>
 </template>
 <script>
 // @ is an alias to /src

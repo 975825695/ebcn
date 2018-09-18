@@ -1,42 +1,42 @@
 <template>
-  <div class="container" height="200">
-    <div class="main">
+    <div class="container" height="200">
+        <div class="main">
 
-      <div class="project-name" v-for="(list,index) in projectList" :key="index">
-        <div class="project-action">
-          <p @click.stop="reOrAdd(1,index)">重命名</p>
-          <p @click.stop="del(index)">删除</p>
+            <div class="project-name" v-for="(list,index) in projectList" :key="index">
+                <div class="project-action">
+                    <p @click.stop="reOrAdd(1,index)">重命名</p>
+                    <p @click.stop="del(index)">删除</p>
+                </div>
+                <router-link :to="{path:list.action}">
+                    <div class="project-title project-title-home">
+                        {{list.title}}
+                    </div>
+                </router-link>
+            </div>
+            <div>
+                <!-- target="_blank" -->
+                <div class="project-new" @click="reOrAdd(2)">
+                    <div class="project-img">
+                        <img src="@/assets/add.png" alt="">
+                    </div>
+                    <div class="project-new-title">
+                        新建项目
+                    </div>
+                </div>
+            </div>
         </div>
-        <router-link :to="{path:list.action}">
-          <div class="project-title project-title-home">
-            {{list.title}}
-          </div>
-        </router-link>
-      </div>
-      <div>
-        <!-- target="_blank" -->
-        <div class="project-new" @click="reOrAdd(2)">
-          <div class="project-img">
-            <img src="@/assets/add.png" alt="">
-          </div>
-          <div class="project-new-title">
-            新建项目
-          </div>
-        </div>
-      </div>
+        <el-dialog :title="dialogTitle" :visible.sync="renameVisible">
+            <el-form :model="form">
+                <el-form-item label="章节名称" :label-width="formLabelWidth">
+                    <el-input v-model="form.name" auto-complete="off"></el-input>
+                </el-form-item>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+                <el-button @click="dialogFormVisible = false">取 消</el-button>
+                <el-button type="primary" @click="reOrAddConfirm()">确 定</el-button>
+            </div>
+        </el-dialog>
     </div>
-    <el-dialog :title="dialogTitle" :visible.sync="renameVisible">
-      <el-form :model="form">
-        <el-form-item label="章节名称" :label-width="formLabelWidth">
-          <el-input v-model="form.name" auto-complete="off"></el-input>
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="reOrAddConfirm()">确 定</el-button>
-      </div>
-    </el-dialog>
-  </div>
 
 </template>
 
@@ -155,7 +155,6 @@ export default {
     margin-bottom: 20px;
     height: 200px;
 }
-
 
 .project-new {
     float: left;

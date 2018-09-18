@@ -1,26 +1,26 @@
 <template>
-  <div class="container" height="200">
-    <div class="main">
-      <el-breadcrumb class="bread" separator-class="el-icon-arrow-right">
-        <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
-        <el-breadcrumb-item>课程体系</el-breadcrumb-item>
-      </el-breadcrumb>
-      <el-table :data="userProjects" stripe style="width: 100%">
-        <el-table-column fixed="left" prop="section" class="title" label="章节名称">
-        </el-table-column>
-        <!-- <el-table-column  prop="section" class="title" label="提交次数">
+    <div class="container" height="200">
+        <div class="main">
+            <el-breadcrumb class="bread" separator-class="el-icon-arrow-right">
+                <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
+                <el-breadcrumb-item>课程体系</el-breadcrumb-item>
+            </el-breadcrumb>
+            <el-table :data="userProjects" stripe style="width: 100%">
+                <el-table-column fixed="left" prop="section" class="title" label="章节名称">
+                </el-table-column>
+                <!-- <el-table-column  prop="section" class="title" label="提交次数">
         </el-table-column>
         <el-table-column  prop="section" class="title" label="我的分数">
         </el-table-column> -->
-        <el-table-column fixed="right" label="操作" width="200" align="center">
-          <template slot-scope="scope">
-            <el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button>
-            <el-button @click="handleClick(scope.row)" type="text" size="small">习题</el-button>
-          </template>
-        </el-table-column>
-      </el-table>
+                <el-table-column fixed="right" label="操作" width="200" align="center">
+                    <template slot-scope="scope">
+                        <el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button>
+                        <el-button @click="handleClick(scope.row)" type="text" size="small">习题</el-button>
+                    </template>
+                </el-table-column>
+            </el-table>
+        </div>
     </div>
-  </div>
 </template>
 
 <script>
@@ -45,30 +45,31 @@ export default {
         this.axios
             .get(url, { params: { name: this.currentUser.userid } })
             .then(res => {
-                var num = [];
-                var noNum = [];
-                // 判断是否含有数字章节开头
-                res.data.forEach(item => {
-                    if (
-                        item.section.substr(0, 1) == "1" ||
-                        item.section.substr(0, 1) == "2" ||
-                        item.section.substr(0, 1) == "3"
-                    ) {
-                        num.push(item);
-                    } else {
-                        noNum.push(item);
-                    }
-                });
-                console.log(num.concat(noNum));
-                this.userProjects = num.concat(noNum).sort((obj1, obj2) => {
-                    let num1 = Number(
-                        obj1.section.substr(0, 3).replace(".", "")
-                    );
-                    let num2 = Number(
-                        obj2.section.substr(0, 3).replace(".", "")
-                    );
-                    return num1 - num2;
-                });
+                this.userProjects = res.data.sort((a, b) => a.Pos - b.Pos);
+                // var num = [];
+                // var noNum = [];
+                // // 判断是否含有数字章节开头
+                // res.data.forEach(item => {
+                //     if (
+                //         item.section.substr(0, 1) == "1" ||
+                //         item.section.substr(0, 1) == "2" ||
+                //         item.section.substr(0, 1) == "3"
+                //     ) {
+                //         num.push(item);
+                //     } else {
+                //         noNum.push(item);
+                //     }
+                // });
+                // console.log(num.concat(noNum));
+                // this.userProjects = num.concat(noNum).sort((obj1, obj2) => {
+                //     let num1 = Number(
+                //         obj1.section.substr(0, 3).replace(".", "")
+                //     );
+                //     let num2 = Number(
+                //         obj2.section.substr(0, 3).replace(".", "")
+                //     );
+                //     return num1 - num2;
+                // });
             })
             .catch(err => {
                 console.log(err);
@@ -148,9 +149,9 @@ a {
 .el-table_1_column_1 {
     padding-left: 20px !important;
 }
-.bread{
+.bread {
     margin-bottom: 20px;
-    span{
+    span {
         font-size: 20px;
     }
 }

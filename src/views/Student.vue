@@ -1,29 +1,33 @@
 <template>
-  <div class="student">
-    <div class="downLoad">
-        <el-button type="plian" class="" @click="download_excel">表格下载</el-button>
-    </div>
-    <el-table :data="tableData" stripe fit style="width: 100%">
-        
-      <el-table-column fixed prop="studentID" label="ID" align="center">
-      </el-table-column>
-      <el-table-column label="姓名" prop="studentName" align="center">
-      </el-table-column>
-      <!-- <div class="tableOuter" v-for='(item,outer) in tableData' :key="outer"> -->
-      <el-table-column v-for='(list,inner) in studentHeader' :label="list.title" :key="inner">
-        <template slot-scope="scope">
-          <!-- <div v-for='(item,index) in scope.row.projectList[inner]' :key="index">
+    <div class="student">
+        <div class="downLoad">
+            <el-button type="plian" class="" @click="download_excel">表格下载</el-button>
+            <el-select v-model="selValue" placeholder="按照课程或班级筛选">
+                <el-option v-for="item in options2" :key="item.value" :label="item.label" :value="item.value" :disabled="item.disabled">
+                </el-option>
+            </el-select>
+        </div>
+        <el-table :data="tableData" stripe fit style="width: 100%">
+
+            <el-table-column fixed prop="studentID" label="ID" align="center">
+            </el-table-column>
+            <el-table-column label="姓名" prop="studentName" align="center">
+            </el-table-column>
+            <!-- <div class="tableOuter" v-for='(item,outer) in tableData' :key="outer"> -->
+            <el-table-column v-for='(list,inner) in studentHeader' :label="list.title" :key="inner">
+                <template slot-scope="scope">
+                    <!-- <div v-for='(item,index) in scope.row.projectList[inner]' :key="index">
             <p>{{item.score}}</p>
           </div> -->
-          <p v-if="scope.row.projectList[inner].status===0" class="notScore">{{scope.row.projectList[inner].score}}</p>
-          <p v-if="scope.row.projectList[inner].status===1" class="score" @click="toDetail(scope.row.projectList[inner].projectId)">{{scope.row.projectList[inner].score}}</p>
-          <p v-if="scope.row.projectList[inner].status===2" class="scored" @click="toDetail(scope.row.projectList[inner].projectId)">{{scope.row.projectList[inner].score}}</p>
-          <p v-if="scope.row.projectList[inner].status === 4">{{scope.row.projectList[inner].score}}</p>
-        </template>
-      </el-table-column>
-      <!-- </div> -->
-      <!-- 预留 -->
-      <!-- <el-table-column
+                    <p v-if="scope.row.projectList[inner].status===0" class="notScore">{{scope.row.projectList[inner].score}}</p>
+                    <p v-if="scope.row.projectList[inner].status===1" class="score" @click="toDetail(scope.row.projectList[inner].projectId)">{{scope.row.projectList[inner].score}}</p>
+                    <p v-if="scope.row.projectList[inner].status===2" class="scored" @click="toDetail(scope.row.projectList[inner].projectId)">{{scope.row.projectList[inner].score}}</p>
+                    <p v-if="scope.row.projectList[inner].status === 4">{{scope.row.projectList[inner].score}}</p>
+                </template>
+            </el-table-column>
+            <!-- </div> -->
+            <!-- 预留 -->
+            <!-- <el-table-column
       fixed="right"
       label="操作"
       align="center">
@@ -31,23 +35,14 @@
         <el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button>
       </template>
     </el-table-column> -->
-   
-    </el-table>
-     <div class="page-separate">
-      <el-pagination
-      class="pageination"
-      background
-      :current-page="currentPage"
-      @size-change="handleSizeChange"
-      @current-change="handleCurrentChange"
-      :page-size="pageSize"
-      :page-sizes="pageSizes"
-      layout="total, sizes, prev, pager, next, jumper"
-      :total="tempData.length">
-      </el-pagination>
+
+        </el-table>
+        <div class="page-separate">
+            <el-pagination class="pageination" background :current-page="currentPage" @size-change="handleSizeChange" @current-change="handleCurrentChange" :page-size="pageSize" :page-sizes="pageSizes" layout="total, sizes, prev, pager, next, jumper" :total="tempData.length">
+            </el-pagination>
+        </div>
+
     </div>
-   
-  </div>
 </template>
 
 <script>
@@ -57,203 +52,8 @@ export default {
         return {
             currentUserId: "",
             tableData: [],
-            tempData:[],
-            mockData: [
-                {
-                    studentID: "embark003",
-                    studentName: "王欣",
-                    projectList: [
-                        {
-                            projectId: 4538783999459328,
-                            projectName: "IAD_1_150_Camera",
-                            projectSection: "",
-                            pos: 4,
-                            score: -1,
-                            status: 0
-                        },
-                        {
-                            projectId: 4996180836614144,
-                            projectName: "IAD_1_110",
-                            projectSection: "",
-                            pos: 0,
-                            score: -1,
-                            status: 0
-                        },
-                        {
-                            projectId: 5101733952880640,
-                            projectName: "IAD_1_210_documents",
-                            projectSection: "",
-                            pos: 6,
-                            score: -1,
-                            status: 0
-                        },
-                        {
-                            projectId: 5559130790035456,
-                            projectName: "IAD_1_130_FirstApp",
-                            projectSection: "",
-                            pos: 2,
-                            score: -1,
-                            status: 0
-                        },
-                        {
-                            projectId: 5664683906301952,
-                            projectName: "IAD_1_Milestone1",
-                            projectSection: "",
-                            pos: 5,
-                            score: -1,
-                            status: 0
-                        },
-                        {
-                            projectId: 6122080743456768,
-                            projectName: "IAD_1_120",
-                            projectSection: "",
-                            pos: 1,
-                            score: -1,
-                            status: 0
-                        }
-                    ]
-                },
-                {
-                    studentID: "embark002",
-                    studentName: "马晓东",
-                    projectList: [
-                        {
-                            projectId: 4573968371548160,
-                            projectName: "IAD_1_210_documents",
-                            projectSection: "",
-                            pos: 6,
-                            score: -1,
-                            status: 0
-                        },
-                        {
-                            projectId: 4925812092436480,
-                            projectName: "IAD_1_130_FirstApp",
-                            projectSection: "",
-                            pos: 2,
-                            score: -1,
-                            status: 0
-                        },
-                        {
-                            projectId: 5207287069147136,
-                            projectName: "IAD_1_110",
-                            projectSection: "",
-                            pos: 0,
-                            score: -1,
-                            status: 0
-                        },
-                        {
-                            projectId: 5488762045857792,
-                            projectName: "IAD_1_150_Camera",
-                            projectSection: "",
-                            pos: 4,
-                            score: -1,
-                            status: 0
-                        },
-                        {
-                            projectId: 5699868278390784,
-                            projectName: "IAD_1_210_notepad",
-                            projectSection: "",
-                            pos: 7,
-                            score: -1,
-                            status: 0
-                        },
-                        {
-                            projectId: 6051711999279104,
-                            projectName: "IAD_1_140_Drawing",
-                            projectSection: "",
-                            pos: 3,
-                            score: -1,
-                            status: 0
-                        },
-                        {
-                            projectId: 6333186975989760,
-                            projectName: "IAD_1_120",
-                            projectSection: "",
-                            pos: 1,
-                            score: -1,
-                            status: 0
-                        },
-                        {
-                            projectId: 6614661952700416,
-                            projectName: "IAD_1_Milestone1",
-                            projectSection: "",
-                            pos: 5,
-                            score: -1,
-                            status: 0
-                        }
-                    ]
-                },
-                {
-                    studentID: "embark001",
-                    studentName: "方小达",
-                    projectList: [
-                        {
-                            projectId: 4644337115725824,
-                            projectName: "IAD_1_210_notepad",
-                            projectSection: "",
-                            pos: 7,
-                            score: -1,
-                            status: 0
-                        },
-                        {
-                            projectId: 4785074604081152,
-                            projectName: "IAD_1_140_Drawing",
-                            projectSection: "",
-                            pos: 3,
-                            score: -1,
-                            status: 0
-                        },
-                        {
-                            projectId: 5066549580791808,
-                            projectName: "IAD_1_120",
-                            projectSection: "",
-                            pos: 1,
-                            score: -1,
-                            status: 0
-                        },
-                        {
-                            projectId: 5348024557502464,
-                            projectName: "IAD_1_Milestone1",
-                            projectSection: "",
-                            pos: 5,
-                            score: -1,
-                            status: 0
-                        },
-                        {
-                            projectId: 5629499534213120,
-                            projectName: "IAD_1_110",
-                            projectSection: "",
-                            pos: 0,
-                            score: -1,
-                            status: 0
-                        },
-                        {
-                            projectId: 5910974510923776,
-                            projectName: "IAD_1_150_Camera",
-                            projectSection: "",
-                            pos: 4,
-                            score: -1,
-                            status: 0
-                        },
-                        {
-                            projectId: 6192449487634432,
-                            projectName: "IAD_1_130_FirstApp",
-                            projectSection: "",
-                            pos: 2,
-                            score: -1,
-                            status: 0
-                        },
-                        {
-                            projectId: 6473924464345088,
-                            projectName: "IAD_1_210_documents",
-                            projectSection: "",
-                            pos: 6,
-                            score: -1,
-                            status: 0
-                        }
-                    ]
-                }
-            ],
+            tempData: [],
+            mockData: [],
             studentHeader: [
                 { title: "1.1.App开发课程简介" },
                 { title: "1.2.项目新建" },
@@ -274,9 +74,22 @@ export default {
                 { title: "3.3.可训练的图像识别" },
                 { title: "Milestone3 可训练的图像识别" }
             ],
-            pageSize:3,
-            pageSizes:[1,2,3,4,5],
-            currentPage:1,
+            pageSize: 5,
+            pageSizes: [5, 10, 15, 20, 25],
+            currentPage: 1,
+            //
+            selValue: "",
+            options2: [
+                {
+                    value: "选项1",
+                    label: "课程"
+                },
+                {
+                    value: "选项2",
+                    label: "班级",
+                    disabled: true
+                }
+            ]
         };
     },
     created() {
@@ -352,13 +165,16 @@ export default {
                     this.studentHeader = this.studentHeader.splice(0, len);
                     // console.log(this.studentHeader);
                     this.tempData = temp;
-                    var arr = []
+                    var arr = [];
                     temp.forEach(element => {
-                       arr.push(element) 
+                        arr.push(element);
                     });
-                    this.tempData = arr
-                    this.tableData = temp.splice((this.currentPage-1)*this.pageSize,this.pageSize)
-                    
+                    this.tempData = arr;
+                    this.tableData = temp.splice(
+                        (this.currentPage - 1) * this.pageSize,
+                        this.pageSize
+                    );
+
                     // var arrr = []
                     // res.data.forEach(element => {
                     //   var li = {
@@ -394,22 +210,25 @@ export default {
             window.location.href = this.url + "/#" + id;
         },
         handleSizeChange(val) {
-            this.pageSize = val
-            console.log(this.tempData)
-            let temp = []
-            this.tempData.forEach(ele=>{
-                temp.push(ele);     
-            })
-            this.tableData = temp.splice((this.currentPage-1)*val,val)
+            this.pageSize = val;
+            console.log(this.tempData);
+            let temp = [];
+            this.tempData.forEach(ele => {
+                temp.push(ele);
+            });
+            this.tableData = temp.splice((this.currentPage - 1) * val, val);
             console.log(`每页 ${val} 条`);
         },
         handleCurrentChange(val) {
-            this.currentPage = val
-            let temp = []
-            this.tempData.forEach(ele=>{
-                temp.push(ele);     
-            })
-            this.tableData = temp.splice((this.currentPage-1)*this.pageSize,this.pageSize)
+            this.currentPage = val;
+            let temp = [];
+            this.tempData.forEach(ele => {
+                temp.push(ele);
+            });
+            this.tableData = temp.splice(
+                (this.currentPage - 1) * this.pageSize,
+                this.pageSize
+            );
         }
     }
 };
@@ -472,10 +291,11 @@ export default {
         text-decoration: underline;
     }
 }
-.page-separate{
+.page-separate {
+    margin-top: 10px;
     position: relative;
     width: 80%;
-    .pageination{
+    .pageination {
         width: 100%;
         position: absolute;
         display: flex;

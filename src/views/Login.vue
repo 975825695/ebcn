@@ -1,52 +1,52 @@
 <template>
-  <div class="container">
-    <div class="content-wrapper">
-      <div class="login-panel">
-        <div class="panel-left">
-          <!-- 背景图 -->
-          <p>有方App云</p>
-        </div>
-        <div class="panel-right">
-          <div class="panel-title">
-            <span class="title-text">登录</span>
-            <img src="@/assets/Embark-logo.png" class="ai-logo">
-          </div>
-          <div class="message-box">
-            <transition name="error-message" enter-active-class="animated shake" leave-active-class="animated fadeOut">
-              <div class="error-message" v-if="errorMessage.length > 0">
-                <p>{{errorMessage}}</p>
-                <!-- <p>{{contactMsg}}</p> -->
-              </div>
-            </transition>
-          </div>
-          <div class="form-item">
-            <!-- <div class="input-label">
+    <div class="container">
+        <div class="content-wrapper">
+            <div class="login-panel">
+                <div class="panel-left">
+                    <!-- 背景图 -->
+                    <p>有方App云</p>
+                </div>
+                <div class="panel-right">
+                    <div class="panel-title">
+                        <span class="title-text">登录</span>
+                        <img src="@/assets/Embark-logo.png" class="ai-logo">
+                    </div>
+                    <div class="message-box">
+                        <transition name="error-message" enter-active-class="animated shake" leave-active-class="animated fadeOut">
+                            <div class="error-message" v-if="errorMessage.length > 0">
+                                <p>{{errorMessage}}</p>
+                                <!-- <p>{{contactMsg}}</p> -->
+                            </div>
+                        </transition>
+                    </div>
+                    <div class="form-item">
+                        <!-- <div class="input-label">
                   <span>用户名&nbsp;UserName</span>
                 </div> -->
-            <div class="input-item">
-              <input type="text" v-model="username" placeholder="用户名" autocomplete="new-password">
-            </div>
-          </div>
-          <div class="form-item">
-            <!-- <div class="input-label">
+                        <div class="input-item">
+                            <input type="text" v-model="username" placeholder="用户名" autocomplete="new-password">
+                        </div>
+                    </div>
+                    <div class="form-item">
+                        <!-- <div class="input-label">
                   <span>密码&nbsp;Password</span>
                 </div> -->
-            <div class="input-item">
-              <input type="password" v-model="password" placeholder="密码" autocomplete="new-password">
+                        <div class="input-item">
+                            <input type="password" v-model="password" placeholder="密码" autocomplete="new-password">
+                        </div>
+                    </div>
+                    <div class="button-box" v-if="!logoutBool">
+                        <input type="button" :class="['button', usernameError ? 'input-error' : '']" @click="login()" value="登录">
+                    </div>
+                    <div class="button-box" v-if="logoutBool">
+                        <input type="button" :class="['button', usernameError ? 'input-error' : '']" @click="logout()" value="注销">
+                    </div>
+                </div>
             </div>
-          </div>
-          <div class="button-box" v-if="!logoutBool">
-            <input type="button" :class="['button', usernameError ? 'input-error' : '']" @click="login()" value="登录">
-          </div>
-          <div class="button-box" v-if="logoutBool">
-            <input type="button" :class="['button', usernameError ? 'input-error' : '']" @click="logout()" value="注销">
-          </div>
-        </div>
-      </div>
-      <footer>
-        <p>遇到登录问题？请联络 info@embarkchina.org</p>
-      </footer>
-      <!-- <div class="message-box">
+            <footer>
+                <p>遇到登录问题？请联络 info@embarkchina.org</p>
+            </footer>
+            <!-- <div class="message-box">
         <transition name="error-message" enter-active-class="animated shake" leave-active-class="animated fadeOut">
           <div class="error-message" v-if="errorMessage.length > 0">
             <p>{{errorMessage}}</p>
@@ -54,8 +54,8 @@
           </div>
         </transition>
       </div> -->
+        </div>
     </div>
-  </div>
 </template>
 <script>
 // @ is an alias to /src

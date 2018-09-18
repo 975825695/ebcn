@@ -1,11 +1,9 @@
 <template>
-  <div class="student">
-    <el-table :data="tableData" stripe ali style="width: 100%">
-      <el-table-column fixed type="index" label="章节" align="center" width="80">
-      </el-table-column>
-      <el-table-column prop="name" label="标题" align="center" width="250">
-      </el-table-column>
-      <el-table-column prop="province" label="作业状态" width="120">
+    <div class="student">
+        <el-table :data="tableData" stripe ali style="width: 100%">
+            <el-table-column fixed type="index" label="章节名称" align="center" width="80">
+            </el-table-column>
+            <!-- <el-table-column prop="province" label="作业状态" width="120">
         <template slot-scope="scope">
           <p class="status">
             <b class="submit" v-if="scope.row.province=='上海'"></b>
@@ -15,18 +13,48 @@
         </template>
       </el-table-column>
       <el-table-column prop="city" label="提交状况" align="center" width="120">
-      </el-table-column>
-      <el-table-column prop="address" label="平均分" align="center" width="300">
-      </el-table-column>
-      <el-table-column fixed="right" label="操作" align="center">
-        <template slot-scope="scope">
-          <el-button @click="exportExcel()" type="text" size="small">导出</el-button>
-        </template>
-      </el-table-column>
-    </el-table>
-    <el-button type="text" @click="importExcel()">导入表格</el-button>
-    <excel-drag ref="excel" :show.sync="dialogVisible"></excel-drag>
-  </div>
+      </el-table-column> -->
+            <el-table-column prop="address" label="平均分" align="center" width="200">
+            </el-table-column>
+            <el-table-column prop="name" label="发布状态" align="center" width="200">
+            </el-table-column>
+            <el-table-column prop="date" label="截止日期" align="center" width="200">
+            </el-table-column>
+            <el-table-column align="center" width="120">
+            </el-table-column>
+            <el-table-column fixed="right" label="操作" align="center" width="150">
+                <template slot-scope="scope">
+                    <el-button @click="commentDetail()" type="text" size="small">发布</el-button>
+                    <el-button @click="commentDetail()" type="text" size="small">评分规则</el-button>
+                </template>
+            </el-table-column>
+        </el-table>
+        <!-- <el-button type="text" @click="importExcel()">导入表格</el-button>
+    <excel-drag ref="excel" :show.sync="dialogVisible"></excel-drag> -->
+
+        <el-dialog :title="dialogTitle" :visible.sync="dialogVisible">
+            <div class="tagList">
+                <div class="tags" v-for="(list,index) in form.commentList" :key="index" @click="del(index)">
+                    <p @click.stop="update(index)">
+                        {{list.title}}
+                    </p>
+                </div>
+            </div>
+            <div class="addOrEdit">
+                <el-input placeholder="请添加或修改评分细则" v-model="newVal">
+                    <template slot="append">
+                        <span class="add" @click="newRuleOrUpdate()">{{addOrEdit}}</span>
+                    </template>
+                </el-input>
+            </div>
+
+            <!-- <p class="newRule" @click="newRule()">继续添加新规则</p> -->
+            <div slot="footer" class="dialog-footer">
+                <el-button @click="dialogVisible = false">取 消</el-button>
+                <el-button type="primary" @click="submit()">确 定</el-button>
+            </div>
+        </el-dialog>
+    </div>
 </template>
 
 <script>
@@ -78,7 +106,24 @@ export default {
                 "收货人电话",
                 "审核状态"
             ],
-            dialogVisible: false
+            newVal: "",
+            addOrEdit: "添加",
+            formLabelWidth: "100px",
+            index: null,
+            type: null,
+            updateIndex: null,
+            dialogTitle: "请规定评分细则",
+            dialogVisible: false,
+            form: {
+                commentList: [
+                    { title: "1111", val: "" },
+                    { title: "222sd2", val: "" },
+                    { title: "3333", val: "" },
+                    { title: "333sdf3", val: "" },
+                    { title: "3333", val: "" },
+                    { title: "3333", val: "" }
+                ]
+            }
         };
     },
     created() {
@@ -95,6 +140,64 @@ export default {
                 this.tableData,
                 this.excelTitle
             );
+        },
+        submit() {
+            this.dialogVisible = false
+        },
+        commentDetail() {
+            this.dialogVisible = true;
+        },
+        newRuleOrUpdate() {
+            if (!this.newVal) {
+                this.$message({
+                    type: "error",
+                    message: "请输入细则"
+                });
+                return;
+            }
+            if (this.addOrEdit === "修改") {
+                this.form.commentList[this.updateIndex].title = this.newVal;
+                this.addOrEdit = "添加";
+                this.$message({
+                    type: "success",
+                    message: "修改成功"
+                });
+            } else if (this.addOrEdit === "添加") {
+                this.form.commentList.push({
+                    title: this.newVal,
+                    name: ""
+                });
+                this.$message({
+                    type: "success",
+                    message: "添加成功"
+                });
+            }
+            this.newVal = "";
+        },
+        del(index) {
+            this.$confirm("确定删除此条吗?", "提示", {
+                confirmButtonText: "确定",
+                cancelButtonText: "取消",
+                type: "warning"
+            })
+                .then(() => {
+                    this.form.commentList.splice(index, 1);
+                    this.$message({
+                        type: "success",
+                        message: "删除成功!"
+                    });
+                })
+                .catch(() => {
+                    this.$message({
+                        type: "info",
+                        message: "已取消删除"
+                    });
+                });
+        },
+        update(index) {
+            this.newVal = this.form.commentList[index].title;
+            this.updateIndex = index;
+            this.addOrEdit = "修改";
         }
     },
     components: {
@@ -132,5 +235,60 @@ export default {
 }
 .finish {
     background-color: #e2e2e2;
+}
+.newRule {
+    color: #ccc;
+    text-align: right;
+    &:hover {
+        color: #7fd81e;
+        cursor: pointer;
+    }
+}
+.add {
+    cursor: pointer;
+}
+.tagList {
+    width: 80%;
+    display: flex;
+    margin: 0 auto;
+    flex-wrap: wrap;
+    .tags {
+        border: 1px solid #ccc;
+        margin-bottom: 10px;
+        margin-right: 20px;
+        p {
+            // width: 60px;
+            display: inline-block;
+            margin: 15px 20px;
+            text-align: center;
+            // height: 40px;
+            // line-height: 40px;
+            &:hover {
+                text-decoration: underline;
+                cursor: pointer;
+                color: #000;
+            }
+        }
+        &:after {
+            content: "\2716";
+            position: relative;
+            right: 5px;
+            top: -15px;
+            opacity: 0.4;
+            font-size: 10px;
+            cursor: pointer;
+        }
+        &:hover {
+            color: red;
+            p {
+                color: #000;
+            }
+        }
+    }
+    margin-bottom: 80px;
+}
+.addOrEdit {
+    width: 80%;
+    margin: 0 auto;
 }
 </style>
