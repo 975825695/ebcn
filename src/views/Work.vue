@@ -1,5 +1,8 @@
 <template>
     <div class="student">
+        <div class="newSection">
+            <el-button @click="showNewSection()">新建章节</el-button>
+        </div>
         <el-table :data="tableData" stripe ali style="width: 100%">
             <el-table-column fixed type="index" label="章节名称" align="center" width="80">
             </el-table-column>
@@ -19,8 +22,13 @@
             <el-table-column prop="name" label="发布状态" align="center" width="200">
             </el-table-column>
             <el-table-column prop="date" label="截止日期" align="center" width="200">
+                <template slot-scope="scope">
+                    <p class="updateDate" @click="showSetDate(scope.$index)">{{scope.row.date}}</p>
+                    <el-button v-show="!scope.row.date" @click="showSetDate(scope.$index)">设置截止时间</el-button>
+                    <p></p>
+                </template>
             </el-table-column>
-            <el-table-column align="center" width="120">
+            <el-table-column align="center">
             </el-table-column>
             <el-table-column fixed="right" label="操作" align="center" width="150">
                 <template slot-scope="scope">
@@ -31,7 +39,7 @@
         </el-table>
         <!-- <el-button type="text" @click="importExcel()">导入表格</el-button>
     <excel-drag ref="excel" :show.sync="dialogVisible"></excel-drag> -->
-
+        <!-- 评分规则弹出框 -->
         <el-dialog :title="dialogTitle" :visible.sync="dialogVisible">
             <div class="tagList">
                 <div class="tags" v-for="(list,index) in form.commentList" :key="index" @click="del(index)">
@@ -52,6 +60,33 @@
             <div slot="footer" class="dialog-footer">
                 <el-button @click="dialogVisible = false">取 消</el-button>
                 <el-button type="primary" @click="submit()">确 定</el-button>
+            </div>
+        </el-dialog>
+        <!-- 新建弹出框 -->
+        <el-dialog title="新建章节" :visible.sync="newSectionVisible">
+            <div class="addOrEdit">
+                <el-input placeholder="请输入章节名称" v-model="newSectionList.address">
+                    <template slot="prepend">
+                        <span class="add">章节名称</span>
+                    </template>
+                </el-input>
+            </div>
+            <!-- <p class="newRule" @click="newRule()">继续添加新规则</p> -->
+            <div slot="footer" class="dialog-footer">
+                <el-button @click="newSectionVisible = false">取 消</el-button>
+                <el-button type="primary" @click="submitSection()">确 定</el-button>
+            </div>
+        </el-dialog>
+        <el-dialog title="设置截止日期" :visible.sync="newDateVisible">
+            <div class="block newDate">
+                <span class="demonstration">请选择日期</span>
+                <el-date-picker v-model="newDateStr" type="date" placeholder="选择日期" value-format="yyyy-MM-dd">
+                </el-date-picker>
+            </div>
+            <!-- <p class="newRule" @click="newRule()">继续添加新规则</p> -->
+            <div slot="footer" class="dialog-footer">
+                <el-button @click="newDateVisible = false">取 消</el-button>
+                <el-button type="primary" @click="submitDate()">确 定</el-button>
             </div>
         </el-dialog>
     </div>
@@ -95,6 +130,14 @@ export default {
                     city: "普陀区",
                     address: "上海市普陀区金沙江路 1518 弄",
                     zip: 200333
+                },
+                {
+                    date: "",
+                    name: "王小虎",
+                    province: "上海",
+                    city: "普陀区",
+                    address: "上海市普陀区金沙江路 1518 弄",
+                    zip: 200333
                 }
             ],
             excelTitle: [
@@ -114,6 +157,10 @@ export default {
             updateIndex: null,
             dialogTitle: "请规定评分细则",
             dialogVisible: false,
+            newSectionVisible: false,
+            newDateVisible: false,
+            newDateStr:'',
+            newSectionList: {},
             form: {
                 commentList: [
                     { title: "1111", val: "" },
@@ -142,7 +189,7 @@ export default {
             );
         },
         submit() {
-            this.dialogVisible = false
+            this.dialogVisible = false;
         },
         commentDetail() {
             this.dialogVisible = true;
@@ -198,6 +245,24 @@ export default {
             this.newVal = this.form.commentList[index].title;
             this.updateIndex = index;
             this.addOrEdit = "修改";
+        },
+        showNewSection() {
+            this.newSectionVisible = true;
+        },
+        submitSection() {
+            this.tableData.push(this.newSectionList);
+            this.newSectionVisible = false;
+            this.init();
+        },
+        showSetDate(index) {
+            this.updateIndex = index
+            this.newDateVisible = true;
+        },
+        submitDate(){
+            this.tableData[this.updateIndex].date = this.newDateStr
+
+            this.newDateVisible = false;
+            this.init();
         }
     },
     components: {
@@ -259,7 +324,7 @@ export default {
         p {
             // width: 60px;
             display: inline-block;
-            margin: 15px 20px;
+            padding: 15px 20px;
             text-align: center;
             // height: 40px;
             // line-height: 40px;
@@ -290,5 +355,27 @@ export default {
 .addOrEdit {
     width: 80%;
     margin: 0 auto;
+}
+.newSection {
+    display: flex;
+    flex-direction: row-reverse;
+}
+.newDate{
+    display: flex;
+    justify-content: center;
+
+    span{
+        margin-right: 20px;
+        line-height: 40px;
+        display: inline-block;
+        text-align: center;
+    }
+}
+.updateDate{
+    &:hover{
+        cursor: pointer;
+        color: red;
+        text-decoration: underline;
+    }
 }
 </style>

@@ -25,6 +25,8 @@
                     <p v-if="scope.row.projectList[inner].status === 4">{{scope.row.projectList[inner].score}}</p>
                 </template>
             </el-table-column>
+            <el-table-column align="center">
+            </el-table-column>
             <!-- </div> -->
             <!-- 预留 -->
             <!-- <el-table-column
