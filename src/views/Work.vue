@@ -6,17 +6,6 @@
         <el-table :data="tableData" stripe ali style="width: 100%">
             <el-table-column fixed type="index" label="章节名称" align="center" width="80">
             </el-table-column>
-            <!-- <el-table-column prop="province" label="作业状态" width="120">
-        <template slot-scope="scope">
-          <p class="status">
-            <b class="submit" v-if="scope.row.province=='上海'"></b>
-            <b class="submited" v-if="scope.row.province=='苏州'"></b>
-            {{scope.row.province}}
-          </p>
-        </template>
-      </el-table-column>
-      <el-table-column prop="city" label="提交状况" align="center" width="120">
-      </el-table-column> -->
             <el-table-column prop="address" label="平均分" align="center" width="200">
             </el-table-column>
             <el-table-column prop="name" label="发布状态" align="center" width="200">
@@ -42,9 +31,9 @@
         <!-- 评分规则弹出框 -->
         <el-dialog :title="dialogTitle" :visible.sync="dialogVisible">
             <div class="tagList">
-                <div class="tags" v-for="(list,index) in form.commentList" :key="index" @click="del(index)">
+                <div class="tags" v-for="(list,index) in form.projectDetail" :key="index" @click="del(index)">
                     <p @click.stop="update(index)">
-                        {{list.title}}
+                        {{list}}
                     </p>
                 </div>
             </div>
@@ -159,18 +148,14 @@ export default {
             dialogVisible: false,
             newSectionVisible: false,
             newDateVisible: false,
-            newDateStr:'',
+            newDateStr: "",
             newSectionList: {},
             form: {
-                commentList: [
-                    { title: "1111", val: "" },
-                    { title: "222sd2", val: "" },
-                    { title: "3333", val: "" },
-                    { title: "333sdf3", val: "" },
-                    { title: "3333", val: "" },
-                    { title: "3333", val: "" }
-                ]
-            }
+                sectionId: "",
+                teacherId: "",
+                projectDetail: ["111", "2222"]
+            },
+            user:{}
         };
     },
     created() {
@@ -180,7 +165,13 @@ export default {
         importExcel() {
             this.dialogVisible = true;
         },
-        init: function() {},
+        init: function() {
+            this.loadData();
+        },
+        loadData() {
+            let user = sessionStorage.getItem("user");
+            this.user = JSON.parse(user);
+        },
         exportExcel() {
             this.jorce.exportExcel(
                 "配件申请单",
@@ -189,10 +180,33 @@ export default {
             );
         },
         submit() {
+            let url = this.url + "/teacher/addScoreDetail";
+            this.form.sectionId = '1001IAD1120'
+            // let params = this.jorce.convertObjToParams(this.form);
+            let params = this.form;
+            this.axios
+                .post(url, params)
+                .then(res => {
+                    console.log(res);
+                })
+                .catch(err => {
+                    console.log(err);
+                });
             this.dialogVisible = false;
         },
         commentDetail() {
             this.dialogVisible = true;
+            let params = {
+                teacherId: this.user.userid,
+                sectionId: "1001IAD1110"
+            };
+            let teacherId = '25'
+            let sectionId = '1001IAD1120'
+            let url = this.url + `/teacher/getScoreDetail?teacherId=${teacherId}&sectionId=${sectionId}`
+            console.log(params)
+            this.axios.get(url).then(res => {
+                this.form = res.data
+            });
         },
         newRuleOrUpdate() {
             if (!this.newVal) {
@@ -203,17 +217,14 @@ export default {
                 return;
             }
             if (this.addOrEdit === "修改") {
-                this.form.commentList[this.updateIndex].title = this.newVal;
+                this.form.projectDetail[this.updateIndex] = this.newVal;
                 this.addOrEdit = "添加";
                 this.$message({
                     type: "success",
                     message: "修改成功"
                 });
             } else if (this.addOrEdit === "添加") {
-                this.form.commentList.push({
-                    title: this.newVal,
-                    name: ""
-                });
+                this.form.projectDetail.push(this.newVal);
                 this.$message({
                     type: "success",
                     message: "添加成功"
@@ -228,7 +239,7 @@ export default {
                 type: "warning"
             })
                 .then(() => {
-                    this.form.commentList.splice(index, 1);
+                    this.form.projectDetail.splice(index, 1);
                     this.$message({
                         type: "success",
                         message: "删除成功!"
@@ -242,7 +253,7 @@ export default {
                 });
         },
         update(index) {
-            this.newVal = this.form.commentList[index].title;
+            this.newVal = this.form.projectDetail[index];
             this.updateIndex = index;
             this.addOrEdit = "修改";
         },
@@ -255,11 +266,11 @@ export default {
             this.init();
         },
         showSetDate(index) {
-            this.updateIndex = index
+            this.updateIndex = index;
             this.newDateVisible = true;
         },
-        submitDate(){
-            this.tableData[this.updateIndex].date = this.newDateStr
+        submitDate() {
+            this.tableData[this.updateIndex].date = this.newDateStr;
 
             this.newDateVisible = false;
             this.init();
@@ -360,19 +371,19 @@ export default {
     display: flex;
     flex-direction: row-reverse;
 }
-.newDate{
+.newDate {
     display: flex;
     justify-content: center;
 
-    span{
+    span {
         margin-right: 20px;
         line-height: 40px;
         display: inline-block;
         text-align: center;
     }
 }
-.updateDate{
-    &:hover{
+.updateDate {
+    &:hover {
         cursor: pointer;
         color: red;
         text-decoration: underline;

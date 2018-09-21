@@ -105,11 +105,6 @@ export default {
 .project-name:hover {
     box-shadow: 0 17px 10px -10px rgba(0, 0, 0, 0.13);
 }
-
-.project-name div:first-child {
-    /* color: #aaa; */
-}
-
 .project-title {
     /* font-family: SourceHanSansCN-Bold; */
     font-weight: 500;

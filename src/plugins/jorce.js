@@ -2,19 +2,19 @@
  * @Author: jorce 
  * @Date: 2018-09-13 10:23:48 
  * @Last Modified by: jorce
- * @Last Modified time: 2018-09-13 10:30:41
+ * @Last Modified time: 2018-09-21 13:56:24
  */
 export default {
-    exportExcel:function(filename, val, excelTitle, exclude){
+    exportExcel: function (filename, val, excelTitle, exclude) {
         var excludelist = [];
         if (exclude) {
-        excludelist = exclude.split(',');
+            excludelist = exclude.split(',');
         }
         var explorer = ''; //浏览器类型
         if (!!window.ActiveXObject || "ActiveXObject" in window)
             explorer = 'ie';
-            //IE浏览器导出
-            if (explorer == 'ie') {
+        //IE浏览器导出
+        if (explorer == 'ie') {
             var arrData = typeof val != 'object' ? JSON.parse(val) : val;
             try {
                 var oXL = new ActiveXObject("Excel.Application"); //创建AX对象excel
@@ -32,9 +32,9 @@ export default {
             for (var i = 0; i < Lenr; i++) {
                 var td = 0;
                 for (var j in arrData[i]) {
-                if (excludelist.length > 0 && excludelist.indexOf(j) >= 0) continue;
-                oSheet.Cells(i + 2, td + 1).value = arrData[i][j]; //赋值
-                td++;
+                    if (excludelist.length > 0 && excludelist.indexOf(j) >= 0) continue;
+                    oSheet.Cells(i + 2, td + 1).value = arrData[i][j]; //赋值
+                    td++;
                 }
             }
             oXL.Visible = true;
@@ -43,9 +43,9 @@ export default {
             oWB.SaveAs(fname);
             oWB.Close();
             oXL.Quit();
-            }
-            //非IE浏览器导出
-            else {
+        }
+        //非IE浏览器导出
+        else {
             var arrData = typeof val != 'object' ? JSON.parse(val) : val;
             var excel = '<table>';
             var row = "<tr>";
@@ -56,9 +56,9 @@ export default {
             for (var i = 0; i < arrData.length; i++) {
                 var row = "<tr>";
                 for (var j in arrData[i]) {
-                if (excludelist.length > 0 && excludelist.indexOf(j) >= 0) continue;
-                var td = arrData[i][j];
-                row += "<td>" + td + "</td>";
+                    if (excludelist.length > 0 && excludelist.indexOf(j) >= 0) continue;
+                    var td = arrData[i][j];
+                    row += "<td>" + td + "</td>";
                 }
                 excel += row + "</tr>";
             }
@@ -99,6 +99,13 @@ export default {
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
-            }
         }
+    },
+    convertObjToParams: function (obj) {
+        var param = new URLSearchParams();
+        for (var key in obj) {
+            param.append(key, obj[key]);
+        }
+        return param;
+    },
 }
