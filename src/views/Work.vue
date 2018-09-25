@@ -4,7 +4,7 @@
             <el-button @click="showNewSection()">新建章节</el-button>
         </div>
         <el-table :data="tableData" stripe ali style="width: 100%">
-            <el-table-column fixed type="index" label="章节名称" align="center" width="80">
+            <el-table-column fixed prop="projectSection" label="章节名称" align="center" width="80">
             </el-table-column>
             <el-table-column prop="address" label="平均分" align="center" width="200">
             </el-table-column>
@@ -22,7 +22,7 @@
             <el-table-column fixed="right" label="操作" align="center" width="150">
                 <template slot-scope="scope">
                     <el-button @click="commentDetail()" type="text" size="small">发布</el-button>
-                    <el-button @click="commentDetail()" type="text" size="small">评分规则</el-button>
+                    <el-button @click="commentDetail(scope.$index,scope.row)" type="text" size="small">评分规则</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -78,6 +78,11 @@
                 <el-button type="primary" @click="submitDate()">确 定</el-button>
             </div>
         </el-dialog>
+    <!-- 分页 -->
+         <div class="page-separate">
+            <el-pagination class="pageination" background :current-page="currentPage" @size-change="handleSizeChange" @current-change="handleCurrentChange" :page-size="pageSize" :page-sizes="pageSizes" layout="total, sizes, prev, pager, next, jumper" :total="tableData.length">
+            </el-pagination>
+        </div>
     </div>
 </template>
 
@@ -150,12 +155,16 @@ export default {
             newDateVisible: false,
             newDateStr: "",
             newSectionList: {},
+            sectionId:'',
             form: {
                 sectionId: "",
-                teacherId: "",
+                // teacherId: "",
                 projectDetail: ["111", "2222"]
             },
-            user:{}
+            user:{},
+             pageSize: 5,
+            pageSizes: [5, 10, 15, 20, 25],
+            currentPage: 1,
         };
     },
     created() {
@@ -171,6 +180,12 @@ export default {
         loadData() {
             let user = sessionStorage.getItem("user");
             this.user = JSON.parse(user);
+            let courseName = 'AI初探'
+            let url  = this.url + `/teacher/getAllProjectSectionByCourseName?courseName=${courseName}`
+            this.axios.get(url).then(res=>{
+                console.log(res.data)
+                this.tableData = res.data.projectSectionList
+            })
         },
         exportExcel() {
             this.jorce.exportExcel(
@@ -181,7 +196,8 @@ export default {
         },
         submit() {
             let url = this.url + "/teacher/addScoreDetail";
-            this.form.sectionId = '1001IAD1120'
+
+            this.form.sectionId = this.sectionId
             // let params = this.jorce.convertObjToParams(this.form);
             let params = this.form;
             this.axios
@@ -194,16 +210,17 @@ export default {
                 });
             this.dialogVisible = false;
         },
-        commentDetail() {
+        commentDetail(index,obj) {
             this.dialogVisible = true;
             let params = {
-                teacherId: this.user.userid,
+                // teacherId: this.user.userid,
                 sectionId: "1001IAD1110"
             };
             let teacherId = '25'
-            let sectionId = '1001IAD1120'
-            let url = this.url + `/teacher/getScoreDetail?teacherId=${teacherId}&sectionId=${sectionId}`
-            console.log(params)
+            let sectionId = obj.sectionId
+            this.sectionId = sectionId
+            let url = this.url + `/teacher/getScoreDetail?sectionId=${sectionId}`
+            // let url = this.url + `/teacher/getScoreDetail?teacherId=${teacherId}&sectionId=${sectionId}`
             this.axios.get(url).then(res => {
                 this.form = res.data
             });
@@ -274,6 +291,27 @@ export default {
 
             this.newDateVisible = false;
             this.init();
+        },
+        handleSizeChange(val) {
+            // this.pageSize = val;
+            // console.log(this.tempData);
+            // let temp = [];
+            // this.tempData.forEach(ele => {
+            //     temp.push(ele);
+            // });
+            // this.tableData = temp.splice((this.currentPage - 1) * val, val);
+            // console.log(`每页 ${val} 条`);
+        },
+        handleCurrentChange(val) {
+            // this.currentPage = val;
+            // let temp = [];
+            // this.tempData.forEach(ele => {
+            //     temp.push(ele);
+            // });
+            // this.tableData = temp.splice(
+            //     (this.currentPage - 1) * this.pageSize,
+            //     this.pageSize
+            // );
         }
     },
     components: {
@@ -387,6 +425,17 @@ export default {
         cursor: pointer;
         color: red;
         text-decoration: underline;
+    }
+}
+.page-separate {
+    margin-top: 10px;
+    position: relative;
+    width: 80%;
+    .pageination {
+        width: 100%;
+        position: absolute;
+        display: flex;
+        justify-content: space-between;
     }
 }
 </style>

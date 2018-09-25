@@ -2,7 +2,7 @@
  * @Author: jorce 
  * @Date: 2018-09-12 16:47:36 
  * @Last Modified by: jorce
- * @Last Modified time: 2018-09-17 15:23:51
+ * @Last Modified time: 2018-09-25 13:31:45
  */
 import Vue from 'vue'
 import App from './App.vue'
@@ -46,7 +46,6 @@ axios.interceptors.request.use(config => {
     spinner: 'el-icon-loading',
     background: 'rgba(0, 0, 0, 0.1)'
   });
-  console.log(config)
   return config;
 });
 
