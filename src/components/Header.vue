@@ -12,7 +12,7 @@
           </div>
            <div v-if="user.user_identity===1">
             <p>
-              <router-link :to="{path:'/teacher/work'}">作业管理</router-link>
+              <router-link :to="{path:'/teacher/workList'}">作业管理</router-link>
             </p>
           </div>
            <div v-if="user.user_identity===1">

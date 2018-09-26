@@ -5,12 +5,14 @@
             <router-view></router-view>
             <!-- <Work class="student"></Work> -->
         </section>
+        <Foot></Foot>
     </div>
 </template>
 <script>
 // @ is an alias to /src
 // import HelloWorld from '@/components/HelloWorld.vue'
 import Header from "@/components/Header.vue";
+import Foot from "@/components/Foot.vue";
 export default {
     name: "home",
     data() {
@@ -34,7 +36,8 @@ export default {
         }
     },
     components: {
-        Header
+        Header,
+        Foot
     }
 };
 </script>

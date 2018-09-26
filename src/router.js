@@ -2,7 +2,7 @@
  * @Author: jorce 
  * @Date: 2018-09-12 16:47:45 
  * @Last Modified by: jorce
- * @Last Modified time: 2018-09-20 12:33:50
+ * @Last Modified time: 2018-09-26 11:19:12
  */
 import Vue from 'vue'
 import Router from 'vue-router'
@@ -82,10 +82,16 @@ var router = new Router({
       //   let account = sessionStorage.getItem('account')
       //   // next()
       // },
-      children: [{
-          path: '',
+      children: [
+        // {
+        //   path: '',
+        //   component: () =>
+        //     import('./views/Work.vue')
+        // },
+        {
+          path: 'workList',
           component: () =>
-            import('./views/Work.vue')
+            import('./views/WorkList.vue')
         },
         {
           path: 'work',

@@ -1,10 +1,14 @@
 <template>
     <div class="student">
+        <el-breadcrumb class="bread" separator-class="el-icon-arrow-right">
+            <el-breadcrumb-item :to="{ path: 'workList' }">上一级</el-breadcrumb-item>
+            <el-breadcrumb-item>课程体系</el-breadcrumb-item>
+        </el-breadcrumb>
         <div class="newSection">
             <el-button @click="showNewSection()">新建章节</el-button>
         </div>
         <el-table :data="tableData" stripe ali style="width: 100%">
-            <el-table-column fixed prop="projectSection" label="章节名称" align="center" width="80">
+            <el-table-column fixed prop="projectSection" label="章节名称" align="center">
             </el-table-column>
             <el-table-column prop="address" label="平均分" align="center" width="200">
             </el-table-column>
@@ -78,9 +82,9 @@
                 <el-button type="primary" @click="submitDate()">确 定</el-button>
             </div>
         </el-dialog>
-    <!-- 分页 -->
-         <div class="page-separate">
-            <el-pagination class="pageination" background :current-page="currentPage" @size-change="handleSizeChange" @current-change="handleCurrentChange" :page-size="pageSize" :page-sizes="pageSizes" layout="total, sizes, prev, pager, next, jumper" :total="tableData.length">
+        <!-- 分页 -->
+        <div class="page-separate">
+            <el-pagination class="pageination" background :current-page="currentPage" @size-change="handleSizeChange" @current-change="handleCurrentChange" :page-size="pageSize" :page-sizes="pageSizes" layout="total, sizes, prev, pager, next, jumper" :total="tempData.length">
             </el-pagination>
         </div>
     </div>
@@ -155,16 +159,17 @@ export default {
             newDateVisible: false,
             newDateStr: "",
             newSectionList: {},
-            sectionId:'',
+            sectionId: "",
             form: {
                 sectionId: "",
                 // teacherId: "",
-                projectDetail: ["111", "2222"]
+                projectDetail: []
             },
-            user:{},
-             pageSize: 5,
+            user: {},
+            pageSize: 5,
             pageSizes: [5, 10, 15, 20, 25],
             currentPage: 1,
+            tempData: []
         };
     },
     created() {
@@ -180,12 +185,20 @@ export default {
         loadData() {
             let user = sessionStorage.getItem("user");
             this.user = JSON.parse(user);
-            let courseName = 'AI初探'
-            let url  = this.url + `/teacher/getAllProjectSectionByCourseName?courseName=${courseName}`
-            this.axios.get(url).then(res=>{
-                console.log(res.data)
-                this.tableData = res.data.projectSectionList
-            })
+            let courseName = "AI初探";
+            let url =
+                this.url +
+                `/teacher/getAllProjectSectionByCourseName?courseName=${courseName}`;
+            this.axios.get(url).then(res => {
+                this.tableData = res.data.projectSectionList;
+                let temp = [];
+                temp = res.data.projectSectionList;
+                this.tableData = temp.splice(
+                    (this.currentPage - 1) * this.pageSize,
+                    this.pageSize
+                );
+                this.tempData = res.data.projectSectionList;
+            });
         },
         exportExcel() {
             this.jorce.exportExcel(
@@ -197,7 +210,7 @@ export default {
         submit() {
             let url = this.url + "/teacher/addScoreDetail";
 
-            this.form.sectionId = this.sectionId
+            this.form.sectionId = this.sectionId;
             // let params = this.jorce.convertObjToParams(this.form);
             let params = this.form;
             this.axios
@@ -210,19 +223,20 @@ export default {
                 });
             this.dialogVisible = false;
         },
-        commentDetail(index,obj) {
+        commentDetail(index, obj) {
             this.dialogVisible = true;
             let params = {
                 // teacherId: this.user.userid,
                 sectionId: "1001IAD1110"
             };
-            let teacherId = '25'
-            let sectionId = obj.sectionId
-            this.sectionId = sectionId
-            let url = this.url + `/teacher/getScoreDetail?sectionId=${sectionId}`
+            let teacherId = "25";
+            let sectionId = obj.sectionId;
+            this.sectionId = sectionId;
+            let url =
+                this.url + `/teacher/getScoreDetail?sectionId=${sectionId}`;
             // let url = this.url + `/teacher/getScoreDetail?teacherId=${teacherId}&sectionId=${sectionId}`
             this.axios.get(url).then(res => {
-                this.form = res.data
+                this.form = res.data;
             });
         },
         newRuleOrUpdate() {
@@ -293,25 +307,23 @@ export default {
             this.init();
         },
         handleSizeChange(val) {
-            // this.pageSize = val;
-            // console.log(this.tempData);
-            // let temp = [];
-            // this.tempData.forEach(ele => {
-            //     temp.push(ele);
-            // });
-            // this.tableData = temp.splice((this.currentPage - 1) * val, val);
-            // console.log(`每页 ${val} 条`);
+            this.pageSize = val;
+            let temp = [];
+            this.tempData.forEach(ele => {
+                temp.push(ele);
+            });
+            this.tableData = temp.splice((this.currentPage - 1) * val, val);
         },
         handleCurrentChange(val) {
-            // this.currentPage = val;
-            // let temp = [];
-            // this.tempData.forEach(ele => {
-            //     temp.push(ele);
-            // });
-            // this.tableData = temp.splice(
-            //     (this.currentPage - 1) * this.pageSize,
-            //     this.pageSize
-            // );
+            this.currentPage = val;
+            let temp = [];
+            this.tempData.forEach(ele => {
+                temp.push(ele);
+            });
+            this.tableData = temp.splice(
+                (this.currentPage - 1) * this.pageSize,
+                this.pageSize
+            );
         }
     },
     components: {
@@ -431,11 +443,19 @@ export default {
     margin-top: 10px;
     position: relative;
     width: 80%;
+    margin-bottom: 100px;
     .pageination {
         width: 100%;
         position: absolute;
         display: flex;
         justify-content: space-between;
+    }
+}
+.bread {
+    margin-top: 20px;
+    span {
+        font-size: 18px;
+        color: #bbb;
     }
 }
 </style>
